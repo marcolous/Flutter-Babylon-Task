@@ -25,7 +25,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
       controller: widget.controller,
       decoration: InputDecoration(
         hintText: widget.hintText,
-        hintStyle: Style.style15Medium(context),
+        hintStyle: Styles.style15Medium(context),
         filled: true,
         fillColor: const Color(0xffF7F8F9),
         focusedBorder: borderDecoration(),

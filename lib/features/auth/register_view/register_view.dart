@@ -1,4 +1,4 @@
-import 'package:babylon_task/auth/register_view/register_view_body.dart';
+import 'package:babylon_task/features/auth/register_view/register_view_body.dart';
 import 'package:flutter/material.dart';
 
 class RegisterView extends StatelessWidget {

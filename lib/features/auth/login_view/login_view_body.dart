@@ -1,3 +1,4 @@
+import 'package:babylon_task/core/utils/no_bounce_scroll_behavior.dart';
 import 'package:babylon_task/core/utils/routes.dart';
 import 'package:babylon_task/core/utils/show_snack_bar.dart';
 import 'package:babylon_task/core/utils/styles.dart';
@@ -9,7 +10,7 @@ import 'package:babylon_task/core/widgets/custom_progress_indicator.dart';
 import 'package:babylon_task/core/widgets/custom_row.dart';
 import 'package:babylon_task/core/widgets/email_text_field.dart';
 import 'package:babylon_task/core/widgets/password_text_field.dart';
-import 'package:babylon_task/cubits/auth_cubit/auth_cubit.dart';
+import 'package:babylon_task/features/auth/manager/auth_cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -40,19 +41,14 @@ class _LoginViewBodyState extends State<LoginViewBody> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is LoginLoading) {
-          setState(() {
-            isLoading = true;
-          });
+          isLoading = true;
         } else if (state is LoginSuccess) {
           Navigator.pushNamed(context, Routes.kHomeScreen);
-          setState(() {
-            isLoading = false;
-          });
+          isLoading = false;
         } else if (state is LoginFailure) {
           ShowSnackBar.show(context, state.errMsg);
-          setState(() {
-            isLoading = false;
-          });
+
+          isLoading = false;
         }
       },
       builder: (context, state) {
@@ -61,43 +57,46 @@ class _LoginViewBodyState extends State<LoginViewBody> {
             padding: const EdgeInsets.symmetric(horizontal: 22),
             child: Form(
               key: formKey,
-              child: ListView(
-                children: [
-                  const CustomBackButton(),
-                  const Gap(28),
-                  Text(
-                    'Welcome back! Glad to see you, Again!',
-                    style: Style.style30(context),
-                  ),
-                  const Gap(32),
-                  EmailTextField(
-                      hintText: 'Enter your email', controller: _email),
-                  const Gap(15),
-                  PasswordTextField(
-                      hintText: 'Enter your Password', controller: _password),
-                  const Gap(15),
-                  const Gap(30),
-                  CustomProgressIndicator(
-                    isLoading: isLoading,
-                    child: CustomButton(
-                      title: 'Login',
-                      onPressed: () =>
-                          _login(email: _email.text, password: _password.text),
+              child: ScrollConfiguration(
+                behavior: NoBounceScrollBehavior(),
+                child: ListView(
+                  children: [
+                    const CustomBackButton(),
+                    const Gap(28),
+                    Text(
+                      'Welcome back! Glad to see you, Again!',
+                      style: Styles.style30(context),
                     ),
-                  ),
-                  const Gap(35),
-                  const CustomOrWith(title: 'Or Login with'),
-                  const Gap(22),
-                  const CustomGoogleButton(),
-                  CustomRow(
-                    title: 'Don\'t have an account? ',
-                    subTitle: 'Register Now',
-                    onTap: () {
-                      Navigator.pushReplacementNamed(
-                          context, Routes.kRegisterScreen);
-                    },
-                  )
-                ],
+                    const Gap(32),
+                    EmailTextField(
+                        hintText: 'Enter your email', controller: _email),
+                    const Gap(15),
+                    PasswordTextField(
+                        hintText: 'Enter your Password', controller: _password),
+                    const Gap(15),
+                    const Gap(30),
+                    CustomProgressIndicator(
+                      isLoading: isLoading,
+                      child: CustomButton(
+                        title: 'Login',
+                        onPressed: () => _login(
+                            email: _email.text, password: _password.text),
+                      ),
+                    ),
+                    const Gap(35),
+                    const CustomOrWith(title: 'Or Login with'),
+                    const Gap(22),
+                    const CustomGoogleButton(),
+                    CustomRow(
+                      title: 'Don\'t have an account? ',
+                      subTitle: 'Register Now',
+                      onTap: () {
+                        Navigator.pushReplacementNamed(
+                            context, Routes.kRegisterScreen);
+                      },
+                    )
+                  ],
+                ),
               ),
             ),
           ),

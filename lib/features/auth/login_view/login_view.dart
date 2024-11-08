@@ -1,4 +1,4 @@
-import 'package:babylon_task/auth/login_view/login_view_body.dart';
+import 'package:babylon_task/features/auth/login_view/login_view_body.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatelessWidget {

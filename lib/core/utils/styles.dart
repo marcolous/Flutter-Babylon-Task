@@ -1,7 +1,7 @@
 import 'package:babylon_task/core/utils/screen_size.dart';
 import 'package:flutter/material.dart';
 
-class Style {
+class Styles {
   static TextStyle style14(BuildContext context) {
     return TextStyle(
       fontSize: getResponsiveFontSize(context, fontSize: 14),
@@ -45,6 +45,7 @@ class Style {
       fontFamily: 'Urbanist',
     );
   }
+
   static TextStyle style23(BuildContext context) {
     return TextStyle(
       fontSize: getResponsiveFontSize(context, fontSize: 23),
@@ -68,6 +69,7 @@ class Style {
       fontFamily: 'Urbanist',
     );
   }
+
   static TextStyle style48(BuildContext context) {
     return TextStyle(
       fontSize: getResponsiveFontSize(context, fontSize: 48),

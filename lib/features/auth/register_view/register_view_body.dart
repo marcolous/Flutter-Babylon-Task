@@ -1,3 +1,4 @@
+import 'package:babylon_task/core/utils/no_bounce_scroll_behavior.dart';
 import 'package:babylon_task/core/utils/routes.dart';
 import 'package:babylon_task/core/utils/show_snack_bar.dart';
 import 'package:babylon_task/core/utils/styles.dart';
@@ -9,7 +10,7 @@ import 'package:babylon_task/core/widgets/custom_progress_indicator.dart';
 import 'package:babylon_task/core/widgets/custom_row.dart';
 import 'package:babylon_task/core/widgets/email_text_field.dart';
 import 'package:babylon_task/core/widgets/password_text_field.dart';
-import 'package:babylon_task/cubits/auth_cubit/auth_cubit.dart';
+import 'package:babylon_task/features/auth/manager/auth_cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -66,47 +67,53 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
             padding: const EdgeInsets.symmetric(horizontal: 22),
             child: Form(
               key: formKey,
-              child: ListView(
-                children: [
-                  const CustomBackButton(),
-                  const Gap(28),
-                  Text(
-                    'Hello! Register to get started',
-                    style: Style.style30(context),
-                  ),
-                  const Gap(32),
-                  EmailTextField(hintText: 'Username', controller: _userName),
-                  const Gap(12),
-                  EmailTextField(hintText: 'Email', controller: _email),
-                  const Gap(12),
-                  PasswordTextField(
-                      hintText: 'Password', controller: _password),
-                  const Gap(12),
-                  PasswordTextField(
-                      hintText: 'Confirm password', controller: _confirmPass),
-                  const Gap(15),
-                  const Gap(15),
-                  CustomProgressIndicator(
-                    isLoading: isLoading,
-                    child: CustomButton(
-                      title: 'Register',
-                      onPressed: () => _register(
-                          email: _email.text.trim(), password: _password.text),
+              child: ScrollConfiguration(
+                behavior: NoBounceScrollBehavior(),
+                child: ListView(
+                  children: [
+                    const CustomBackButton(),
+                    const Gap(28),
+                    Text(
+                      'Hello! Register to get started',
+                      style: Styles.style30(context),
                     ),
-                  ),
-                  const Gap(35),
-                  const CustomOrWith(title: 'Or Register with'),
-                  const Gap(22),
-                  const CustomGoogleButton(),
-                  CustomRow(
-                    title: 'Already have an account? ',
-                    subTitle: 'Login Now',
-                    onTap: () {
-                      Navigator.pushReplacementNamed(
-                          context, Routes.kLoginScreen);
-                    },
-                  )
-                ],
+                    const Gap(32),
+                    EmailTextField(hintText: 'Username', controller: _userName),
+                    const Gap(12),
+                    EmailTextField(hintText: 'Email', controller: _email),
+                    const Gap(12),
+                    PasswordTextField(
+                        hintText: 'Password', controller: _password),
+                    const Gap(12),
+                    PasswordTextField(
+                        hintText: 'Confirm password', controller: _confirmPass),
+                    const Gap(15),
+                    const Gap(15),
+                    CustomProgressIndicator(
+                      isLoading: isLoading,
+                      child: CustomButton(
+                        title: 'Register',
+                        onPressed: () => _register(
+                          email: _email.text.trim(),
+                          password: _password.text,
+                          username: _userName.text.trim(),
+                        ),
+                      ),
+                    ),
+                    const Gap(35),
+                    const CustomOrWith(title: 'Or Register with'),
+                    const Gap(22),
+                    const CustomGoogleButton(),
+                    CustomRow(
+                      title: 'Already have an account? ',
+                      subTitle: 'Login Now',
+                      onTap: () {
+                        Navigator.pushReplacementNamed(
+                            context, Routes.kLoginScreen);
+                      },
+                    )
+                  ],
+                ),
               ),
             ),
           ),
@@ -115,14 +122,21 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
     );
   }
 
-  void _register({required String email, required String password}) async {
+  void _register({
+    required String email,
+    required String password,
+    required String username,
+  }) async {
     if (_password.text != _confirmPass.text) {
       ShowSnackBar.show(context, 'Password doesn\'t match');
       return;
     }
     if (formKey.currentState!.validate()) {
-      BlocProvider.of<AuthCubit>(context)
-          .register(email: email, password: password);
+      BlocProvider.of<AuthCubit>(context).register(
+        email: email,
+        password: password,
+        username: username,
+      );
     }
   }
 }

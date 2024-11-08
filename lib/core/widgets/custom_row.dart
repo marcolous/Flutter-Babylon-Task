@@ -19,7 +19,7 @@ class CustomRow extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Style.style15Medium(context).copyWith(
+            style: Styles.style15Medium(context).copyWith(
               color: Colors.black,
             ),
           ),
@@ -27,7 +27,7 @@ class CustomRow extends StatelessWidget {
             onTap: onTap,
             child: Text(
               subTitle,
-              style: Style.style15(context).copyWith(
+              style: Styles.style15(context).copyWith(
                 color: const Color(0xff35C2C1),
               ),
             ),

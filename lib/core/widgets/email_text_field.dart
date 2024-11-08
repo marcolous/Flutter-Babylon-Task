@@ -22,7 +22,7 @@ class EmailTextField extends StatelessWidget {
       controller: controller,
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: Style.style15Medium(context),
+        hintStyle: Styles.style15Medium(context),
         filled: true,
         fillColor: const Color(0xffF7F8F9),
         focusedBorder: borderDecoration(),

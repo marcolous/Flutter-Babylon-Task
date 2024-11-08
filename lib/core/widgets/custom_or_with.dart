@@ -22,7 +22,7 @@ class CustomOrWith extends StatelessWidget {
             color: Colors.white,
             child: Text(
               title,
-              style: Style.style14(context),
+              style: Styles.style14(context),
             ),
           ),
         ),

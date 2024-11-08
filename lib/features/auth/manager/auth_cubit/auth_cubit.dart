@@ -1,10 +1,16 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> login({
     required String email,
@@ -12,10 +18,11 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emit(LoginLoading());
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+
       emit(LoginSuccess());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
@@ -31,13 +38,23 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> register({
     required String email,
     required String password,
+    required String username,
   }) async {
     emit(RegisterLoading());
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      User? user = userCredential.user;
+      if (user != null) {
+        await _firestore.collection('users').doc(user.uid).set({
+          'username': username,
+          'email': email,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      }
       emit(RegisterSuccess());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -54,5 +71,24 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       emit(RegisterFailure(errMsg: e.toString()));
     }
+  }
+
+  Future<String?> getUsername() async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        DocumentSnapshot userDoc =
+            await _firestore.collection('users').doc(user.uid).get();
+        if (userDoc.exists && userDoc.data() != null) {
+          return (userDoc.data() as Map<String, dynamic>)['username']
+              ?.toString();
+        } else {
+          log("User document does not exist.");
+        }
+      }
+    } catch (e) {
+      log("Error getting username: $e");
+    }
+    return null;
   }
 }
