@@ -1,5 +1,14 @@
 import 'package:babylon_task/core/utils/routes.dart';
 import 'package:babylon_task/core/utils/show_snack_bar.dart';
+import 'package:babylon_task/core/utils/styles.dart';
+import 'package:babylon_task/core/widgets/custom_back_button.dart';
+import 'package:babylon_task/core/widgets/custom_button.dart';
+import 'package:babylon_task/core/widgets/custom_google_button.dart';
+import 'package:babylon_task/core/widgets/custom_or_with.dart';
+import 'package:babylon_task/core/widgets/custom_progress_indicator.dart';
+import 'package:babylon_task/core/widgets/custom_row.dart';
+import 'package:babylon_task/core/widgets/email_text_field.dart';
+import 'package:babylon_task/core/widgets/password_text_field.dart';
 import 'package:babylon_task/cubits/auth_cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,7 +76,6 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                   PasswordTextField(
                       hintText: 'Enter your Password', controller: _password),
                   const Gap(15),
-                  const ForgotPasswordWidget(),
                   const Gap(30),
                   CustomProgressIndicator(
                     isLoading: isLoading,
