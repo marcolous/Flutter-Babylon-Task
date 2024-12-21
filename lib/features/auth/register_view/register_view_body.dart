@@ -2,7 +2,6 @@ import 'package:babylon_task/core/utils/no_bounce_scroll_behavior.dart';
 import 'package:babylon_task/core/utils/routes.dart';
 import 'package:babylon_task/core/utils/show_snack_bar.dart';
 import 'package:babylon_task/core/utils/styles.dart';
-import 'package:babylon_task/core/widgets/custom_back_button.dart';
 import 'package:babylon_task/core/widgets/custom_button.dart';
 import 'package:babylon_task/core/widgets/custom_google_button.dart';
 import 'package:babylon_task/core/widgets/custom_or_with.dart';
@@ -71,8 +70,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                 behavior: NoBounceScrollBehavior(),
                 child: ListView(
                   children: [
-                    const CustomBackButton(),
-                    const Gap(28),
+                    const Gap(50),
                     Text(
                       'Hello! Register to get started',
                       style: Styles.style30(context),
